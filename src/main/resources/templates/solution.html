@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title>Solution</title>
+<script>
+var httpRequest;
+
+var cnt = 0;
+var nodeLength = 0;
+var coinData = [];
+
+function plusCoin() {
+	cnt++;
+	coinBox.innerHTML += 
+		'<div id="box_' + cnt + '"><strong>동전 금액</strong><input type="number" class="piClass" id="pi_' + cnt + '"/><strong>개수</strong><input type="number" class="niClass" id="ni_' + cnt + '"/></div>';
+}
+
+function minusCoin() {
+	document.getElementById('box_' + cnt).remove();
+	cnt--;
+}
+
+function postAjax(data) {
+    var params = typeof data == 'string' ? data : Object.keys(data).map(
+            function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }
+        ).join('&');
+
+    var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+
+    xhr.open('POST', '/result');
+    xhr.onreadystatechange = function() {
+    };
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send(params);
+
+    return xhr;
+}
+
+function moneyCheck(bill) {
+	var coinSum = 0;
+
+	for (var i in coinData) {
+		coinSum += (coinData[i].pi * coinData[i].ni);
+	}
+
+	if (bill == coinSum) {
+		var ajaxData = 
+			{
+				'bill' : bill,
+				'coinCat' : coinData.length,
+				'coinModel' : coinData
+			};
+
+		console.log('ajaxData : ', ajaxData);
+		postAjax(ajaxData);
+
+	} else {
+		alert("결과 미출력");
+	}
+}
+
+function goResult() {
+	nodeLength = coinBox.childNodes.length;
+	for (var i = 1; i <= nodeLength; i++) {
+		coinData.push({"pi" : document.getElementById("pi_" + i).value, "ni" : document.getElementById("ni_" + i).value});
+	}
+
+	moneyCheck(bill.value);
+}
+
+window.onload = function() {
+	var bill = document.getElementById("bill");
+	var coinBox = document.getElementById("coinBox");
+}
+</script>
+</head>
+<body>
+<h1>SOLUTION</h1>
+<hr/>
+<div>
+	<strong>지폐 금액</strong>&nbsp;&nbsp;
+	<input type="number" id="bill" name="bill"/><br/>
+	<strong>동전의 가지 수</strong>&nbsp;&nbsp;
+	<input type="button" id="plusButton" onclick="plusCoin()" value="+"/>
+	<input type="button" id="minusButton" onclick="minusCoin()" value="-"/>
+	<br/>
+	<div id="coinBox"></div>
+	<hr/>
+	<input type="button" id="resultButton" onclick = "goResult()" value="계 산"/>
+</div>
+</body>
+</html>
