@@ -2,19 +2,19 @@ package com.example.demo.model;
 
 public class CoinModel {
 
-	String pi;
-	String ni;
+	int pi;
+	int ni;
 
-	public String getPi() {
+	public int getPi() {
 		return pi;
 	}
-	public void setPi(String pi) {
+	public void setPi(int pi) {
 		this.pi = pi;
 	}
-	public String getNi() {
+	public int getNi() {
 		return ni;
 	}
-	public void setNi(String ni) {
+	public void setNi(int ni) {
 		this.ni = ni;
 	}
 }

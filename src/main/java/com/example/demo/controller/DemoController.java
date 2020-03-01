@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.example.demo.model.CoinModel;
 import com.example.demo.model.DemoModel;
 import com.example.demo.service.DemoService;
 
@@ -22,11 +25,16 @@ public class DemoController {
 	}
 
 	@RequestMapping(value="/result", method=RequestMethod.POST)
-	public ResponseEntity<String> resultPage(DemoModel data) {
-		System.out.println("Bill : " + data.getBill());
-		System.out.println("CoinCat : " + data.getCoinCat());
+	public ResponseEntity<Integer> resultPage(@RequestBody DemoModel data) {
 
-		service.solution(data.getBill(), data.getCoinCat(), v, c);
-		return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+		System.out.println("지폐 : " + data.getBill());
+		System.out.println("동전 가지 수 : " + data.getCoinCat());
+		for (CoinModel c : data.getCoinModel()) {
+			System.out.println("동전 금액 : " + c.getPi() + ", 해당 동전 보유수 : " + c.getNi());
+		}
+
+		int result = service.solution(data);
+
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 }

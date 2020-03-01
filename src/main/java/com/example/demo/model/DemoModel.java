@@ -1,12 +1,13 @@
 package com.example.demo.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DemoModel {
 
 	int bill;
 	int coinCat;
-	CoinModel coinModel;
+	CoinModel[] coinModel;
 
 	public int getBill() {
 		return bill;
@@ -20,10 +21,10 @@ public class DemoModel {
 	public void setCoinCat(int coinCat) {
 		this.coinCat = coinCat;
 	}
-	public CoinModel getCoinModel() {
+	public CoinModel[] getCoinModel() {
 		return coinModel;
 	}
-	public void setCoinModel(CoinModel coinModel) {
+	public void setCoinModel(CoinModel[] coinModel) {
 		this.coinModel = coinModel;
 	}
 	
